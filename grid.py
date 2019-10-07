@@ -1,5 +1,5 @@
-from grid_element import Wall, EmptyCase, Door, Hole, Crate, Character
 import os
+from grid_element import Wall, EmptyCase, Door, Hole, Crate, Character
 
 
 def clear():

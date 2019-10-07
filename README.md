@@ -20,4 +20,4 @@ All you need is python3
 
 ## Author
 
-* **Louis Lesueur** - students at the École nationale des Ponts et chaussées
+* **Louis Lesueur** - student at the École nationale des Ponts et chaussées

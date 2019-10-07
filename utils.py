@@ -1,5 +1,5 @@
-from grid import Grid, clear
 import os
+from grid import Grid, clear
 
 
 def select():
@@ -13,9 +13,9 @@ def select():
     print("")
     print("Chose your level: ")
 
-    LEVELS = os.listdir('levels')
-    for i in range(len(LEVELS)):
-        print(str(i)+" - "+str(LEVELS[i]))
+    levels = os.listdir('levels')
+    for i in range(len(levels)):
+        print(str(i)+" - "+str(levels[i]))
 
     print("")
 
@@ -25,28 +25,28 @@ def select():
         int(choice)
     except ValueError:
         print("That's not an int! 0 selected.")
-        return "levels/"+LEVELS[0]
+        return "levels/"+levels[0]
 
-    return "levels/"+LEVELS[int(choice)]
+    return "levels/"+levels[int(choice)]
 
 
 def init(level: str):
     """Initialize the grid
        Input: absolute path to the level
        Output: The grid"""
-    GRID = Grid(level)
-    return GRID
+    main_grid = Grid(level)
+    return main_grid
 
 
-def play(GRID: Grid):
+def play(main_grid: Grid):
     """Function which displays and updates the grid"""
-    while GRID.win == 0:
-        GRID.show()
+    while main_grid.win == 0:
+        main_grid.show()
         orders = input("Move with zqsd: ")
         for order in orders:
-            GRID.move(order)
+            main_grid.move(order)
 
-        if GRID.win == 1:
+        if main_grid.win == 1:
             print("You win !")
         else:
             print("You lose !")

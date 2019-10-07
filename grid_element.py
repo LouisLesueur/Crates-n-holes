@@ -1,8 +1,8 @@
 class GridElement:
     """Base class for grid_elements"""
-    def __init__(self, posh: int, posv: int, movable: bool, symbol: str):
-        self.posh = posh
-        self.posv = posv
+    def __init__(self, pos_h: int, pos_v: int, movable: bool, symbol: str):
+        self.pos_h = pos_h
+        self.pos_v = pos_v
         self.movable = movable
         self._symbol = symbol
 
@@ -14,8 +14,8 @@ class GridElement:
             raise Exception("Can only move one case by one")
         if not self.movable:
             raise Exception("Trying to move a static object !")
-        self.posh += direction_h
-        self.posv += direction_v
+        self.pos_h += direction_h
+        self.pos_v += direction_v
 
     @property
     def symbol(self):
@@ -24,35 +24,35 @@ class GridElement:
 
 class Character(GridElement):
     """A charcter is a movable grid_element"""
-    def __init__(self, posh: int, posv: int):
-        GridElement.__init__(self, posh, posv, True, '1')
+    def __init__(self, pos_h: int, pos_v: int):
+        GridElement.__init__(self, pos_h, pos_v, True, '1')
 
 
 class Wall(GridElement):
     """ A wall is a not movable grid_element """
-    def __init__(self, posh: int, posv: int):
-        GridElement.__init__(self, posh, posv, False, '#')
+    def __init__(self, pos_h: int, pos_v: int):
+        GridElement.__init__(self, pos_h, pos_v, False, '#')
 
 
 class Hole(GridElement):
     """A hole is a not movable grid_element"""
-    def __init__(self, posh: int, posv: int):
-        GridElement.__init__(self, posh, posv, False, 'o')
+    def __init__(self, pos_h: int, pos_v: int):
+        GridElement.__init__(self, pos_h, pos_v, False, 'o')
 
 
 class Door(GridElement):
     """A door is a not movable grid_element"""
-    def __init__(self, posh: int, posv: int):
-        GridElement.__init__(self, posh, posv, False, '@')
+    def __init__(self, pos_h: int, pos_v: int):
+        GridElement.__init__(self, pos_h, pos_v, False, '@')
 
 
 class Crate(GridElement):
     """A crate is a movable grid_element"""
-    def __init__(self, posh: int, posv: int):
-        GridElement.__init__(self, posh, posv, True, '*')
+    def __init__(self, pos_h: int, pos_v: int):
+        GridElement.__init__(self, pos_h, pos_v, True, '*')
 
 
 class EmptyCase(GridElement):
     """An emptycase is a movable grid_element"""
-    def __init__(self, posh: int, posv: int):
-        GridElement.__init__(self, posh, posv, True, ' ')
+    def __init__(self, pos_h: int, pos_v: int):
+        GridElement.__init__(self, pos_h, pos_v, True, ' ')
