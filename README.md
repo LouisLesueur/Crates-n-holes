@@ -1,4 +1,4 @@
-# TDLog - TP1
+# TDLog - TP
 
 A simple game in which you can push boxes into holes and you have to reach a door.
 
@@ -20,4 +20,4 @@ All you need is python3
 
 ## Author
 
-* **Louis Lesueur** - student at the École nationale des Ponts et chaussées
+* **Louis Lesueur** - student at the École Nationale des Ponts et Chaussées (ENPC)
