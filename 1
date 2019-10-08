@@ -104,7 +104,7 @@ class Grid:
             if isinstance(target, Hole):
                 self._win = -1
 
-            elif isinstance(target, EmptySquare):
+            if isinstance(target, EmptySquare):
                 player.move(direction_h, direction_v)
                 target.move(-direction_h, -direction_v)
                 self[self.char_h, self.char_v] = target
@@ -113,7 +113,7 @@ class Grid:
                 self.char_h += direction_h
                 self.char_v += direction_v
 
-            elif (isinstance(target, Crate) and
+            if (isinstance(target, Crate) and
                     not(isinstance(beyond_target, Wall)) and
                     not(isinstance(beyond_target, Crate))):
                 beyond_target = self[self.char_h+2*direction_h,
@@ -128,7 +128,7 @@ class Grid:
                     target.move(direction_h, direction_v)
                     self[self.char_h+2*direction_h,
                          self.char_v+2*direction_v] = target
-                elif isinstance(beyond_target, Hole):
+                if isinstance(beyond_target, Hole):
                     self[self.char_h+2*direction_h,
                          self.char_v+2*direction_v] = EmptySquare(self.char_h+2*direction_h,
                                                                   self.char_v+2*direction_v)
