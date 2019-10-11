@@ -44,6 +44,12 @@ class Hole(GridElement):
         GridElement.__init__(self, False, 'o')
 
 
+class DeepHole(GridElement):
+    """A hole, but deeper"""
+    def __init__(self):
+        GridElement.__init__(self, False, 'O')
+
+
 class Door(GridElement):
     """A door is a not movable grid_element"""
     def __init__(self):

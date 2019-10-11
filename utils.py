@@ -1,6 +1,7 @@
 import os
 from grid import Grid, clear
 from grid_element import Wall, EmptySquare, Door, Hole, Crate, Character
+from grid_element import DeepHole
 from move import move_player
 
 
@@ -42,6 +43,8 @@ def open_grid(level):
                 table[i][j] = Hole()
             elif lines[i][j] == '*':
                 table[i][j] = Crate()
+            elif lines[i][j] == 'O':
+                table[i][j] = DeepHole()
             else:
                 for k in range(1, 5):
                     if lines[i][j] == str(k):

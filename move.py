@@ -1,5 +1,6 @@
 from grid import Grid
-from grid_element import Door, Wall, Hole, Crate, Character, EmptySquare
+from grid_element import Door, Wall, DeepHole
+from grid_element import Hole, Crate, Character, EmptySquare
 
 
 def move_player(main_grid: Grid, player_id: int,
@@ -31,6 +32,12 @@ def move_player(main_grid: Grid, player_id: int,
                 main_grid[pos_h, pos_v] = EmptySquare()
                 return "Noooooooooooooooo...."
 
+            elif isinstance(target, DeepHole):
+                main_grid[pos_h, pos_v].win = -1
+                main_grid.change_player(player_id, -1, -1)
+                main_grid[pos_h, pos_v] = Hole()
+                return "Noooooooooooooooo...."
+
             elif isinstance(target, EmptySquare):
                 main_grid.swap([pos_h, pos_v],
                                [pos_h+direction_h, pos_v+direction_v])
@@ -60,6 +67,13 @@ def move_player(main_grid: Grid, player_id: int,
                     main_grid[pos_h+2*direction_h,
                               pos_v+2*direction_v] = EmptySquare()
                     message = "A good thing done !"
+                elif isinstance(beyond_target, DeepHole):
+                    main_grid.swap([pos_h, pos_v],
+                                   [pos_h+direction_h, pos_v+direction_v])
+                    main_grid[pos_h, pos_v] = EmptySquare()
+                    main_grid[pos_h+2*direction_h,
+                              pos_v+2*direction_v] = Hole()
+                    message = "So deep..."
                 main_grid.change_player(player_id,
                                         pos_h+direction_h,
                                         pos_v+direction_v)
