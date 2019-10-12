@@ -1,8 +1,8 @@
 import os
 from grid import Grid, clear
 from grid_element import Wall, EmptySquare, Door, Hole, Crate, Character
-from grid_element import DeepHole
-from move import move_player
+from grid_element import DeepHole, TurnstileBody, TurnstileArm
+from move import move_player, find_turnstile_body
 
 
 def open_grid(level):
@@ -36,15 +36,21 @@ def open_grid(level):
                 table[i][j] = Wall()
             elif lines[i][j] == ' ':
                 table[i][j] = EmptySquare()
-            elif lines[i][j] == '@':
-                table[i][j] = Door()
-                check_door += 1
             elif lines[i][j] == 'o':
                 table[i][j] = Hole()
             elif lines[i][j] == '*':
                 table[i][j] = Crate()
             elif lines[i][j] == 'O':
                 table[i][j] = DeepHole()
+            elif lines[i][j] == '%':
+                table[i][j] = TurnstileBody()
+            elif lines[i][j] == '°':
+                table[i][j] = TurnstileArm()
+                # to check if the arm is not alone
+                find_turnstile_body()
+            elif lines[i][j] == '@':
+                table[i][j] = Door()
+                check_door += 1
             else:
                 for k in range(1, 5):
                     if lines[i][j] == str(k):
@@ -107,7 +113,7 @@ def play(main_grid: Grid):
     current_player = 1
     while main_grid.win == 0:
         print(message)
-        orders = input("Move with 1234<>v^: ")
+        orders = input("Move with 1234<>v^ (curent player "+str(current_player)+"): ")
         for order in orders:
             if order in player_symbols:
                 if main_grid.players[int(order)-1] != (-1, -1):

@@ -2,7 +2,7 @@ import os
 from math import sqrt
 
 
-# Déplacer cette fonction dans utils fait tout planter
+# Moving this to utils generates bugs, I will think of it for the next time
 def clear():
     """To clear the screen between two moves"""
     # windows

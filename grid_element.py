@@ -10,6 +10,7 @@ class GridElement:
 
     @property
     def is_movable(self):
+        """To verify if the element is movable"""
         return self._is_movable
 
 
@@ -66,3 +67,15 @@ class EmptySquare(GridElement):
     """An emptysquare is a movable grid_element"""
     def __init__(self):
         GridElement.__init__(self, True, ' ')
+
+
+class TurnstileArm(GridElement):
+    """An turnstilearm is a movable grid_element"""
+    def __init__(self):
+        GridElement.__init__(self, True, '°')
+
+
+class TurnstileBody(GridElement):
+    """A turnstilebody isn't movable"""
+    def __init__(self):
+        GridElement.__init__(self, False, '%')
