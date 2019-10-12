@@ -17,11 +17,12 @@ To move a character press the correponding key (1,2,3 or 4) and then use ><^v an
 
 All you need is python3
 
-###TODO
+### TODO
 
 * Factorize the grid_reading function
 * Simplify the move_player function
 * Add more levels
+* Get clear out of grid.py
 
 ## Author
 
