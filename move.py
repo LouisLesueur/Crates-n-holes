@@ -1,3 +1,7 @@
+"""
+Here are the functions that operate on the grid to move elements
+"""
+
 from grid import Grid
 from grid_element import Door, Wall, DeepHole
 from grid_element import Hole, Crate, Character, EmptySquare
@@ -33,7 +37,7 @@ def move_player(main_grid: Grid, player_id: int,
             main_grid[pos_h, pos_v].win = 1
             return "GG you must be some kind of engineer !"
 
-        elif not(isinstance(target, Wall)) and not(isinstance(target, Door)):
+        elif not isinstance(target, Wall) and not isinstance(target, Door):
             # if the player moves a crate, the element behind must be checked
             beyond_target = main_grid[pos_h+2*direction_h,
                                       pos_v+2*direction_v]
@@ -78,13 +82,12 @@ def move_player(main_grid: Grid, player_id: int,
                     raise Exception("You are too far from the turnstile !")
 
                 rotate_turnstile(main_grid, body_h, body_v, sens)
-                if not(isinstance(beyond_target, TurnstileBody)):
+                if not isinstance(beyond_target, TurnstileBody):
                     main_grid.change_player(player_id,
                                             pos_h+2*direction_h,
                                             pos_v+2*direction_v)
                     return "Please don't throw up"
-                else:
-                    return "Ouch !"
+                return "Ouch !"
 
             elif isinstance(target, TurnstileBody):
                 return "OMG This thing can rotate !"
@@ -135,7 +138,8 @@ def move_player(main_grid: Grid, player_id: int,
 
 
 def find_turnstile_body(main_grid, arm_h, arm_v):
-    """For a given arm, this function return the coords of the corresponding body"""
+    """For a given arm, this function return the coords of the
+       corresponding body"""
     count = 0
     for i in [-1, 0, 1]:
         for j in [-1, 0, 1]:
@@ -145,27 +149,24 @@ def find_turnstile_body(main_grid, arm_h, arm_v):
                 count += 1
     if count == 0:
         raise Exception("One arm is alone !")
-    elif count > 1:
+    if count > 1:
         raise Exception("Too many bodies !")
-    else:
-        return [pos_h, pos_v]
+    return [pos_h, pos_v]
 
 
 def rotate_turnstile(main_grid, body_h: int, body_v: int, sens: int):
     """To rotate a turnstile: sens must be 1 for trigo"""
     if sens not in [-1, 1]:
         raise Exception("Sens must be 1 or -1, not "+str(sens))
-    else:
-        # There is probably a simpler way to do this
-        to_be_rotated = []
-        for i in [-1, 0, 1]:
-            for j in [-1, 0, 1]:
-                if (i, j) != (0, 0):
-                    pos_h = body_h+i
-                    pos_v = body_v+j
-                    new_h = body_h-sens*j
-                    new_v = body_v+sens*i
-                    to_be_rotated.append([main_grid[pos_h, pos_v],
-                                          [new_h, new_v]])
-        for square in to_be_rotated:
-            main_grid[square[1][0], square[1][1]] = square[0]
+    # There is probably a simpler way to do this
+    to_be_rotated = []
+    for i in [-1, 0, 1]:
+        for j in [-1, 0, 1]:
+            if (i, j) != (0, 0):
+                pos_h = body_h+i
+                pos_v = body_v+j
+                new_h = body_h-sens*j
+                new_v = body_v+sens*i
+                to_be_rotated.append([main_grid[pos_h, pos_v], [new_h, new_v]])
+    for square in to_be_rotated:
+        main_grid[square[1][0], square[1][1]] = square[0]

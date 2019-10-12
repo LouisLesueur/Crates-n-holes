@@ -1,5 +1,11 @@
+"""
+Here are the various elements of the game
+"""
+
+
 class GridElement:
     """Base class for grid_elements"""
+
     def __init__(self, is_movable: bool, symbol: str):
         self._is_movable = is_movable
         self.symbol = symbol
@@ -16,6 +22,7 @@ class GridElement:
 
 class Character(GridElement):
     """A charcter is a movable grid_element"""
+
     def __init__(self, symbol: str):
         self._win = 0
         allowed_symbols = {'1', '2', '3', '4'}
@@ -26,56 +33,66 @@ class Character(GridElement):
 
     @property
     def win(self):
+        """To know if the player has win"""
         return self._win
 
     @win.setter
-    def win(self, nw):
-        self._win = nw
+    def win(self, n_win):
+        """To change the value of win"""
+        self._win = n_win
 
 
 class Wall(GridElement):
     """ A wall is a not movable grid_element """
+
     def __init__(self):
         GridElement.__init__(self, False, '#')
 
 
 class Hole(GridElement):
     """A hole is a not movable grid_element"""
+
     def __init__(self):
         GridElement.__init__(self, False, 'o')
 
 
 class DeepHole(GridElement):
     """A hole, but deeper"""
+
     def __init__(self):
         GridElement.__init__(self, False, 'O')
 
 
 class Door(GridElement):
     """A door is a not movable grid_element"""
+
     def __init__(self):
         GridElement.__init__(self, False, '@')
 
 
 class Crate(GridElement):
     """A crate is a movable grid_element"""
+
     def __init__(self):
         GridElement.__init__(self, True, '*')
 
 
 class EmptySquare(GridElement):
     """An emptysquare is a movable grid_element"""
+
     def __init__(self):
         GridElement.__init__(self, True, ' ')
 
 
 class TurnstileArm(GridElement):
     """An turnstilearm is a movable grid_element"""
+
     def __init__(self):
         GridElement.__init__(self, True, '°')
 
 
 class TurnstileBody(GridElement):
     """A turnstilebody isn't movable"""
+
     def __init__(self):
         GridElement.__init__(self, False, '%')

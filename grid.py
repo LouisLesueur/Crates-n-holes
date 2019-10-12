@@ -1,3 +1,7 @@
+"""
+Here is the definition of the class Grid, which is essential for the game
+"""
+
 import os
 from math import sqrt
 
