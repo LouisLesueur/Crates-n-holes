@@ -10,13 +10,18 @@ To start the game just run
 python main.py
 ```
 
-To move your charcter use zqsd and press the enter key (notice that you can enter a sequence).
+To move a character press the correponding key (1,2,3 or 4) and then use ><^v and press the enter key (notice that you can enter a sequence). By default you'll move character 1.
 
 
 ### Prerequisites
 
 All you need is python3
 
+###TODO
+
+* Factorize the grid_reading function
+* Simplify the move_player function
+* Add more levels
 
 ## Author
 
