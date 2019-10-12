@@ -6,6 +6,7 @@ import os
 from grid import Grid, clear
 from grid_element import Wall, EmptySquare, Door, Hole, Crate, Character
 from grid_element import DeepHole, TurnstileBody, TurnstileArm
+from move import move_player
 
 
 def open_grid(level):
