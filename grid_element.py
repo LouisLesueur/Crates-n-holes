@@ -69,21 +69,24 @@ class Hole(GridElement):
 
 
 class Door(GridElement):
-    """A door is a not movable grid_element"""
+    """A door is a not movable grid_element which
+       leads to victory"""
 
     def __init__(self):
         GridElement.__init__(self, False, '@')
 
 
 class Crate(GridElement):
-    """A crate is a movable grid_element"""
+    """A crate is a movable grid_element which can
+       be pushed by a character"""
 
     def __init__(self):
         GridElement.__init__(self, True, '*')
 
 
 class EmptySquare(GridElement):
-    """An emptysquare is a movable grid_element"""
+    """An emptysquare is a movable grid_element on which
+       movable elements can move"""
 
     def __init__(self):
         GridElement.__init__(self, True, ' ')
@@ -95,21 +98,20 @@ class TurnstileArm(GridElement):
     def __init__(self):
         GridElement.__init__(self, True, '°')
 
-    def find_turnstile_body(self, main_grid, arm_h, arm_v):
+    def find_turnstile_body(self, main_grid, arm):
         """For a given arm, this function return the coords of the
            corresponding body"""
         count = 0
         for i in [-1, 0, 1]:
             for j in [-1, 0, 1]:
-                if isinstance(main_grid[arm_h+i, arm_v+j], TurnstileBody):
-                    pos_h = arm_h+i
-                    pos_v = arm_v+j
+                if isinstance(main_grid[arm[0]+i, arm[1]+j], TurnstileBody):
+                    pos = [arm[0]+i, arm[1]+j]
                     count += 1
         if count == 0:
             raise Exception("One arm is alone !")
         if count > 1:
             raise Exception("Too many bodies !")
-        return [pos_h, pos_v]
+        return pos
 
 
 class TurnstileBody(GridElement):

@@ -19,8 +19,7 @@ class Game:
         self.graphics = Graphics()
         self.grid = Grid(self.graphics.select())
 
-    def move_player(self, player_id: int,
-                    direction_h: int, direction_v: int):
+    def move_player(self, player_id: int, direction) -> str:
         """The function which computes all moves
            Inputs:
                -- The grid
@@ -28,20 +27,20 @@ class Game:
                -- The direction of the movement
            Output:
                -- A message for the player"""
+
+        message = ""
+
         if player_id >= len(self.grid.players_to_coords):
             raise Exception("There are only 4 players !")
         if self.grid.players_to_coords[player_id-1] == (-1, -1):
             return "not a current player !"
 
-        pos_h = self.grid.players_to_coords[player_id-1][0]
-        pos_v = self.grid.players_to_coords[player_id-1][1]
-        new_h = pos_h+direction_h
-        new_v = pos_v+direction_v
-        far_h = pos_h+2*direction_h
-        far_v = pos_v+2*direction_v
+        pos = self.grid.players_to_coords[player_id-1]
+        new = [pos[0]+direction[0], pos[1]+direction[1]]
+        far = [pos[0]+2*direction[0], pos[1]+2*direction[1]]
 
         # To alleviate the code
-        target = self.grid[new_h, new_v]
+        target = self.grid[new[0], new[1]]
 
         if isinstance(target, Wall):
             return "Ouch !"
@@ -51,67 +50,71 @@ class Game:
             return "GG you must be some kind of engineer !"
 
         # if the player moves a crate, what's behind must be checked
-        beyond_target = self.grid[far_h, far_v]
         if isinstance(target, Hole):
-            self.grid[pos_h, pos_v].win = -1
-            self.grid.change_player(player_id, -1, -1)
-            self.grid[pos_h, pos_v] = EmptySquare()
-            if target.size == 1:
-                self.grid[new_h, new_v] = EmptySquare()
-            elif target.size == 2:
-                self.grid[new_h, new_v].fill()
-            return "Noooooooooooooooo...."
+            return self.move_hole(target, player_id, pos, new)
 
         if isinstance(target, EmptySquare):
-            self.grid.swap([pos_h, pos_v], [new_h, new_v])
-            self.grid.change_player(player_id, new_h, new_v)
+            self.grid.swap(pos, new)
+            self.grid.change_player(player_id, new)
 
         elif isinstance(target, Character):
-            return "Hello my friend !"
+            message = "Hello my friend !"
 
         elif isinstance(target, TurnstileArm):
-            body_h, body_v = target.find_turnstile_body(self.grid,
-                                                        new_h, new_v)
-            sens = self.get_rotation(pos_h, pos_v, body_h, body_v,
-                                     direction_h, direction_v)
-            if not isinstance(beyond_target, TurnstileBody):
-                self.rotate_turnstile(body_h, body_v, sens)
-                self.grid.change_player(player_id, far_h, far_v)
-                return "Please don't throw up"
-            return "Ouch !"
-
+            message = self.move_turnstile_arm(target, pos,
+                                              direction, player_id)
         elif isinstance(target, TurnstileBody):
-            return "OMG This thing can rotate !"
+            message = "OMG This thing can rotate !"
 
         elif isinstance(target, Crate):
-            return self.move_crate(player_id, [pos_h, pos_v],
-                                   [new_h, new_v], [far_h, far_v])
+            message = self.move_crate(player_id, pos, new, far)
         else:
             raise Exception("You are trying to do something strange !")
+        return message
 
-    def move_crate(self, player_id, pos, new, far):
+    def move_hole(self, target, player_id, pos, new) -> str:
+        """To manage interactions with a hole"""
+        self.grid[pos[0], pos[1]].win = -1
+        self.grid.change_player(player_id, [-1, -1])
+        self.grid[pos[0], pos[1]] = EmptySquare()
+        if target.size == 1:
+            self.grid[new[0], new[1]] = EmptySquare()
+        elif target.size == 2:
+            self.grid[new[0], new[1]].fill()
+        return "Noooooooooooooooo...."
+
+    def move_turnstile_arm(self, target, pos, direction, player_id) -> str:
+        """To manage the interaction with a turnstile arm"""
+        new = [pos[0]+direction[0], pos[1]+direction[1]]
+        far = [pos[0]+2*direction[0], pos[1]+2*direction[1]]
+        beyond_target = self.grid[far[0], far[1]]
+        body = target.find_turnstile_body(self.grid, new)
+        sens = self.get_rotation(pos, body, direction)
+        if not isinstance(beyond_target, TurnstileBody):
+            self.rotate_turnstile(body, sens)
+            self.grid.change_player(player_id, far)
+            return "Please don't throw up"
+        return "Ouch !"
+
+    def move_crate(self, player_id, pos, new, far) -> str:
         """When one character is behind a crate"""
-        pos_h, pos_v = pos
-        new_h, new_v = new
-        far_h, far_v = far
-        beyond_target = self.grid[far_h, far_v]
+        beyond_target = self.grid[far[0], far[1]]
         message = ""
         if isinstance(beyond_target, EmptySquare):
-            self.grid.big_swap([pos_h, pos_v], [new_h, new_v],
-                               [far_h, far_v])
+            self.grid.big_swap(pos, new, far)
             message = "You're so strong !"
-            self.grid.change_player(player_id, new_h, new_v)
+            self.grid.change_player(player_id, new)
         elif isinstance(beyond_target, Hole):
-            self.grid.swap([pos_h, pos_v], [new_h, new_v])
-            self.grid[pos_h, pos_v] = EmptySquare()
+            self.grid.swap(pos, new)
+            self.grid[pos[0], pos[1]] = EmptySquare()
             if beyond_target.size == 1:
-                self.grid[far_h, far_v] = EmptySquare()
+                self.grid[far[0], far[1]] = EmptySquare()
                 message = "A good thing done !"
-                self.grid.change_player(player_id, new_h, new_v)
+                self.grid.change_player(player_id, new)
             else:
-                self.grid[far_h, far_v].fill()
+                self.grid[far[0], far[1]].fill()
                 message = "So deep..."
-                self.grid.change_player(player_id, new_h, new_v)
+                self.grid.change_player(player_id, new)
         elif isinstance(beyond_target, Crate):
             message = "So heavy !"
         elif isinstance(beyond_target, TurnstileArm):
@@ -124,18 +127,17 @@ class Game:
             message = "Are trying to kill him ?"
         return message
 
-    def get_rotation(self, pos_h: int, pos_v: int, body_h: int, body_v: int,
-                     direction_h: int, direction_v: int):
+    def get_rotation(self, pos, body, direction) -> int:
         """To determine the sens of rotation of a turnstile"""
-        if body_v-pos_v == 1:
-            if body_h-pos_h == 1:
-                return direction_h-direction_v
-            return direction_h+direction_v
-        if body_h-pos_h == 1:
-            return -direction_h-direction_v
-        return -direction_h+direction_v
+        if body[1]-pos[1] == 1:
+            if body[0]-pos[0] == 1:
+                return direction[0]-direction[1]
+            return direction[0]+direction[1]
+        if body[0]-pos[0] == 1:
+            return -direction[0]-direction[1]
+        return -direction[0]+direction[1]
 
-    def rotate_turnstile(self, body_h: int, body_v: int, sens: int):
+    def rotate_turnstile(self, body, sens: int):
         """To rotate a turnstile: sens must be 1 for trigo"""
         if sens not in [-1, 1]:
             raise Exception("Sens must be 1 or -1, not "+str(sens))
@@ -144,12 +146,10 @@ class Game:
         for i in [-1, 0, 1]:
             for j in [-1, 0, 1]:
                 if (i, j) != (0, 0):
-                    pos_h = body_h+i
-                    pos_v = body_v+j
-                    new_h = body_h-sens*j
-                    new_v = body_v+sens*i
+                    pos = [body[0]+i, body[1]+j]
+                    new = [body[0]-sens*j, body[1]+sens*i]
                     to_be_rotated.append(
-                        [self.grid[pos_h, pos_v], [new_h, new_v]])
+                        [self.grid[pos[0], pos[1]], [new[0], new[1]]])
         for square in to_be_rotated:
             self.grid[square[1][0], square[1][1]] = square[0]
 
@@ -172,10 +172,8 @@ class Game:
                     if self.grid.players_to_coords[int(order)-1] != (-1, -1):
                         current_player = int(order)
                 elif order in order_symbols:
-                    direction_h = order_symbols[order][0]
-                    direction_v = order_symbols[order][1]
-                    message = self.move_player(current_player,
-                                               direction_h, direction_v)
+                    direction = order_symbols[order]
+                    message = self.move_player(current_player, direction)
                 else:
                     print(order+' is not an acceptable character !')
             self.graphics.clear()

@@ -20,7 +20,7 @@ class Graphics:
         print("Chose your level: ")
 
         levels = os.listdir('levels')
-        for i in range(len(levels)):
+        for i, _ in enumerate(levels):
             print(str(i)+" - "+str(levels[i]))
 
         print("")

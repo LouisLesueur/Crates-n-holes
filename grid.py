@@ -40,26 +40,21 @@ class Grid:
         check_char = 4*[0]
         players = 4*[(-1, -1)]
 
+        elements = {'#': Wall(), ' ': EmptySquare(), 'o': Hole(1),
+                    '*': Crate(), '%': TurnstileBody(),
+                    '°': TurnstileArm()}
+
         for i in range(n_lig):
             for j in range(n_col):
-                if lines[i][j] == '#':
-                    table[i][j] = Wall()
-                elif lines[i][j] == ' ':
-                    table[i][j] = EmptySquare()
-                elif lines[i][j] == 'o':
-                    table[i][j] = Hole(1)
-                elif lines[i][j] == '*':
-                    table[i][j] = Crate()
-                elif lines[i][j] == 'O':
-                    table[i][j] = Hole(2)
-                elif lines[i][j] == '%':
-                    table[i][j] = TurnstileBody()
-                elif lines[i][j] == '°':
-                    table[i][j] = TurnstileArm()
+                if lines[i][j] in elements:
+                    table[i][j] = elements[lines[i][j]]
                     # to check if the arm is not alone
                 elif lines[i][j] == '@':
                     table[i][j] = Door()
                     check_door += 1
+                elif lines[i][j] == 'O':
+                    # Can't be placed in elements
+                    table[i][j] = Hole(2)
                 else:
                     for k in range(1, 5):
                         if lines[i][j] == str(k):
@@ -110,9 +105,9 @@ class Grid:
         """To win the game"""
         self._win = 1
 
-    def change_player(self, player_id: int, n_h: int, n_v: int):
+    def change_player(self, player_id: int, n_p):
         """To modify a player coord"""
-        self._players_to_coords[player_id-1] = (n_h, n_v)
+        self._players_to_coords[player_id-1] = (n_p[0], n_p[1])
 
     def swap(self, id1, id2):
         """To swap two elements in the grid, with coord id1 and id2"""
