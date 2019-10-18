@@ -2,7 +2,6 @@
 Here is the definition of the class Grid, which is essential for the game
 """
 
-import os
 from math import sqrt
 from grid_element import Door, Crate, Character
 from grid_element import TurnstileArm, TurnstileBody
@@ -25,7 +24,7 @@ class Grid:
         # Opening the file containing the level
         try:
             level_file = open(level, 'r')
-        except Exception:
+        except IOError:
             print("Can't read the level")
         lines = level_file.readlines()
         lines = [line.rstrip() for line in lines]
@@ -119,12 +118,12 @@ class Grid:
         """To swap two elements in the grid, with coord id1 and id2"""
         dist = sqrt((id2[0]-id1[0])**2+(id2[1]-id1[1])**2)
         if dist == 1:
-            if (self.table[id1[0]][id1[1]].is_movable and
-                    self.table[id2[0]][id2[1]].is_movable):
-                to_be_swaped1 = self.table[id1[0]][id1[1]]
-                to_be_swaped2 = self.table[id2[0]][id2[1]]
-                self.table[id1[0]][id1[1]] = to_be_swaped2
-                self.table[id2[0]][id2[1]] = to_be_swaped1
+            if (self[id1[0], id1[1]].is_movable and
+                    self[id2[0], id2[1]].is_movable):
+                self[id1[0], id1[1]], self[id2[0], id2[1]
+                                           ] = self[id2[0],
+                                                    id2[1]], self[id1[0],
+                                                                  id1[1]]
             else:
                 raise Exception("You are trying to move fixed objects")
         else:
