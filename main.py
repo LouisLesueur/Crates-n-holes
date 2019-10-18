@@ -1,9 +1,8 @@
 """
 The main module of the game
 """
-from utils import select, init, play
+from game import Game
 
 if __name__ == "__main__":
-    level = select()
-    main_grid = init(level)
-    play(main_grid)
+    GAME = Game()
+    GAME.play()
