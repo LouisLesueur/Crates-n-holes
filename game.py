@@ -9,15 +9,28 @@ from grid_element import TurnstileArm, TurnstileBody
 from graphics import Graphics
 
 
-class Game:
+class Game():
     """A class to bind all game elements together"""
 
-    def __init__(self):
+    current_player = 1
+
+    def __init__(self, testing=False, soluce_testing=False):
         """Initialize the grid
            Input: absolute path to the level
            Output: The grid"""
         self.graphics = Graphics()
-        self.grid = Grid(self.graphics.select())
+        self.level_name = self.graphics.select(testing, soluce_testing)
+        try:
+            soluce_file = open("soluces/"+self.level_name+".soluce", 'r')
+            self.soluce = soluce_file.readline().rstrip()
+        except IOError:
+            print("Can't read soluce !")
+        self.grid = Grid("levels/"+self.level_name)
+        self.player_symbols = ['1', '2', '3', '4']
+        self.order_symbols = {'v': (1, 0), '^': (-1, 0), '>': (0, 1),
+                              '<': (0, -1), 's': (1, 0), 'z': (-1, 0),
+                              'd': (0, 1), 'q': (0, -1)}
+        self.message = "Good luck !"
 
     def move_player(self, player_id: int, direction) -> str:
         """The function which computes all moves
@@ -29,8 +42,7 @@ class Game:
                -- A message for the player"""
 
         message = ""
-
-        if player_id >= len(self.grid.players_to_coords):
+        if player_id >= len(self.grid.players_to_coords)+1:
             raise Exception("There are only 4 players !")
         if self.grid.players_to_coords[player_id-1] == (-1, -1):
             return "not a current player !"
@@ -44,28 +56,21 @@ class Game:
 
         if isinstance(target, Wall):
             return "Ouch !"
-
         if isinstance(target, Door):
             self.grid.you_win()
             return "GG you must be some kind of engineer !"
-
-        # if the player moves a crate, what's behind must be checked
         if isinstance(target, Hole):
             return self.move_hole(target, player_id, pos, new)
-
         if isinstance(target, EmptySquare):
             self.grid.swap(pos, new)
             self.grid.change_player(player_id, new)
-
         elif isinstance(target, Character):
             message = "Hello my friend !"
-
         elif isinstance(target, TurnstileArm):
             message = self.move_turnstile_arm(target, pos,
                                               direction, player_id)
         elif isinstance(target, TurnstileBody):
             message = "OMG This thing can rotate !"
-
         elif isinstance(target, Crate):
             message = self.move_crate(player_id, pos, new, far)
         else:
@@ -124,7 +129,7 @@ class Game:
         elif isinstance(beyond_target, Wall):
             message = "You can't do that you know ?"
         elif isinstance(beyond_target, Character):
-            message = "Are trying to kill him ?"
+            message = "Are you trying to kill him ?"
         return message
 
     def get_rotation(self, pos, body, direction) -> int:
@@ -153,34 +158,56 @@ class Game:
         for square in to_be_rotated:
             self.grid[square[1][0], square[1][1]] = square[0]
 
+    def exec_order(self, orders: str):
+        """
+        To execute a serie of moves on the grid
+        Input:
+        --- orders: a sequence of moves
+        Output:
+        --- The state of the grid
+        """
+        for order in orders:
+            if order in self.player_symbols:
+                if self.grid.players_to_coords[int(order)-1] != (-1, -1):
+                    self.current_player = int(order)
+            elif order in self.order_symbols:
+                direction = self.order_symbols[order]
+                self.message = self.move_player(self.current_player, direction)
+            else:
+                print(order+' is not an acceptable character !')
+            # Checking if it's a wiin
+            if self.grid.win == 1:
+                return True
+            if self.grid.win == -1:
+                return False
+
     def play(self):
         """Function which displays and updates the grid"""
         self.graphics.clear()
         print(self.grid)
-        message = "Good luck !"
-        player_symbols = ['1', '2', '3', '4']
-        order_symbols = {'v': (1, 0), '^': (-1, 0), '>': (0, 1), '<': (0, -1),
-                         's': (1, 0), 'z': (-1, 0), 'd': (0, 1), 'q': (0, -1)}
-        current_player = 1
         while self.grid.win == 0:
-            if message is not None:
-                print(message)
+            if self.message is not None:
+                print(self.message)
             orders = input(
-                "Move with <>v^zqsd (curent player "+str(current_player)+"): ")
-            for order in orders:
-                if order in player_symbols:
-                    if self.grid.players_to_coords[int(order)-1] != (-1, -1):
-                        current_player = int(order)
-                elif order in order_symbols:
-                    direction = order_symbols[order]
-                    message = self.move_player(current_player, direction)
-                else:
-                    print(order+' is not an acceptable character !')
+                "Move with <>v^zqsd (player "+str(self.current_player)+"): ")
+            self.exec_order(orders)
             self.graphics.clear()
             print(self.grid)
-
-            # Checking if it's a win
             if self.grid.win == 1:
                 print("You win !")
             elif self.grid.win == -1:
                 print("You lose !")
+
+
+if __name__ == "__main__":
+
+    GAME = Game(False, True)
+
+    def check_soluce():
+        """ To check if a soluce works
+        >>> GAME.exec_order(GAME.soluce)
+        True
+        """
+    print("Soluce tested: "+GAME.soluce)
+    import doctest
+    doctest.testmod()

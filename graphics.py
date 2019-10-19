@@ -8,12 +8,17 @@ import os
 class Graphics:
     """Class to manage all graphical elements"""
 
-    def select(self):
+    def select(self, testing: bool, soluce_testing: bool):
         """A very simple selection menu
-           Output: The absolute path to the level"""
+           Output: The absolute path to the level
+           (if testing, also the path to the soluce)"""
         self.clear()
+        if testing:
+            return "tests.txt"
         print("*-------------------------------*")
         print("|           TDLOG TP1           |")
+        if soluce_testing:
+            print("| !!!! SOLUCE TESTING MODE !!!! |")
         print("|        Louis Lesueur          |")
         print("*-------------------------------*")
         print("")
@@ -31,9 +36,8 @@ class Graphics:
             int(choice)
         except ValueError:
             print("That's not an int! 0 selected.")
-            return "levels/"+levels[0]
-
-        return "levels/"+levels[int(choice)]
+            return levels[0]
+        return levels[int(choice)]
 
     def clear(self):
         """To clear the screen between two moves"""

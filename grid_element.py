@@ -25,7 +25,6 @@ class Character(GridElement):
        They can move on the emptysquares and push crates into holes"""
 
     def __init__(self, symbol: str):
-        self._win = 0
         allowed_symbols = {'1', '2', '3', '4'}
         if symbol in allowed_symbols:
             GridElement.__init__(self, True, symbol)

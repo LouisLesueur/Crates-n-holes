@@ -13,9 +13,19 @@ python main.py
 To move a character press the correponding key (1,2,3 or 4) and then use ><^v and press the enter key (notice that you can enter a sequence). By default you'll move character 1.
 
 
+### Testing a level
+
+To check if a level and its soluce are corrects, just run
+
+```
+python game.py
+```
+
+to enter in soluce test mode.
+
 ### Prerequisites
 
-All you need is python3
+All you need is python3, and pytest if you want to make tests
 
 ## Author
 
