@@ -114,3 +114,10 @@ def test_turnstiles():
     # going into a body
     GAME_TS.exec_order('sdd')
     assert GAME_TS.move_player(3, [-1, 0]) == "OMG This thing can rotate !"
+
+
+def test_lose():
+    """
+    To test lose conditions
+    """
+    assert GAME_TS.exec_order('1s3sdd1ddddsdd2zddds') == False
