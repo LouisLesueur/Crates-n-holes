@@ -10,8 +10,7 @@ class Graphics:
 
     def select(self, testing: bool, soluce_testing: bool):
         """A very simple selection menu
-           Output: The absolute path to the level
-           (if testing, also the path to the soluce)"""
+           Output: The name of the level"""
         self.clear()
         if testing:
             return "tests.txt"

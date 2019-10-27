@@ -30,11 +30,11 @@ class Grid:
         lines = [line.rstrip() for line in lines]
 
         # grid dimensions
-        n_lig = len(lines)
-        n_col = len(lines[0])
+        self.n_lig = len(lines)
+        self.n_col = len(lines[0])
 
         # Initialisation of table table, which contains all grid elements
-        table = [[0]*n_col for _ in range(n_lig)]
+        table = [[0]*self.n_col for _ in range(self.n_lig)]
 
         check_door = 0
         check_char = 4*[0]
@@ -44,8 +44,8 @@ class Grid:
                     '*': Crate(), '%': TurnstileBody(),
                     '°': TurnstileArm()}
 
-        for i in range(n_lig):
-            for j in range(n_col):
+        for i in range(self.n_lig):
+            for j in range(self.n_col):
                 if lines[i][j] in elements:
                     table[i][j] = elements[lines[i][j]]
                     # to check if the arm is not alone
@@ -128,6 +128,12 @@ class Grid:
         """To make a circular rotation"""
         self.swap(id2, id3)
         self.swap(id1, id2)
+
+    def get_dimensions(self):
+        """
+        To get the dimensions of the grid
+        """
+        return self.n_lig, self.n_col
 
     def __str__(self):
         """function that show the grid"""
