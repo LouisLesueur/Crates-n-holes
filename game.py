@@ -7,6 +7,7 @@ from grid_element import Door, Wall
 from grid_element import Hole, Crate, Character, EmptySquare
 from grid_element import TurnstileArm, TurnstileBody
 
+
 class Game():
     """A class to bind all game elements together"""
 
@@ -162,6 +163,8 @@ class Game():
         --- orders: a sequence of moves
         Output:
         --- The state of the grid
+        >>> exec_order(self.soluce)
+        True
         """
         for order in orders:
             if order in self.player_symbols:
@@ -179,6 +182,9 @@ class Game():
                 return False
 
     def state(self):
+        """
+        To know if the game is won or lost ( usefull for gui )
+        """
         return self.grid.win
 
     def __getitem__(self, key):

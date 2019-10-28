@@ -1,22 +1,24 @@
-import os
-from PyQt5.QtCore import pyqtSignal, QObject, Qt
-from PyQt5.QtWidgets import QApplication, QLabel, QListWidget, QWidget, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QMessageBox
+"""
+Contains all the custom widgets for gui
+"""
+
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QGridLayout
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QMessageBox
 from PyQt5.QtGui import QPixmap, QIcon
 from game import Game
 
 
 class Moves(QWidget):
-
+    """
+    Widget with moves and player selection buttons
+    """
     player = 1
     click = pyqtSignal(str)
 
     def __init__(self):
 
         super().__init__()
-        self.initUI()
-
-    def initUI(self):
-
         self.images = {'1': 'img/char1.png', '2': 'img/char2.png',
                        '3': 'img/char3.png', '4': 'img/char4.png'}
 
@@ -44,10 +46,17 @@ class Moves(QWidget):
         self.setLayout(layout)
 
     def get_order(self):
+        """
+        To emit a signal with the corresponding order
+        when one of the move buttons is clicked
+        """
         sender = self.sender()
         self.click.emit(sender.text())
 
     def change_player(self):
+        """
+        To emit a signal when the change player button is clicked
+        """
         if (self.player+1) % 4 == 0:
             self.player = 4
         else:
@@ -55,21 +64,26 @@ class Moves(QWidget):
         self.player_btn.setIcon(QIcon(self.images[str(self.player)]))
         self.click.emit(str(self.player))
 
-    def keyPressEvent(self, e):
-        if e.key() == Qt.Key_Q:
+    def keyPressEvent(self, event):
+        """
+        To allow keyborad controls of the player
+        """
+        if event.key() == Qt.Key_Q:
             self.click.emit('<')
-        if e.key() == Qt.Key_D:
+        if event.key() == Qt.Key_D:
             self.click.emit('>')
-        if e.key() == Qt.Key_S:
+        if event.key() == Qt.Key_S:
             self.click.emit('v')
-        if e.key() == Qt.Key_Z:
+        if event.key() == Qt.Key_Z:
             self.click.emit('^')
-        if e.key() == Qt.Key_E:
+        if event.key() == Qt.Key_E:
             self.change_player()
 
 
-class Grid_GUI(QWidget):
-
+class GridGUI(QWidget):
+    """
+    Widget to draw the grid
+    """
     victory = pyqtSignal()
     lose = pyqtSignal()
 
@@ -107,8 +121,11 @@ class Grid_GUI(QWidget):
         elif self.game.state() == -1:
             self.lose.emit()
 
-
     def refresh(self):
+        """
+        To refresh the grid between two moves
+        """
         for i in range(1, self.n_lig+1):
             for j in range(1, self.n_col+1):
-                self.elements[i-1][j-1].setPixmap(QPixmap(self.images[self.game[i-1, j-1]]))
+                self.elements[i-1][j -
+                                   1].setPixmap(QPixmap(self.images[self.game[i-1, j-1]]))

@@ -1,19 +1,19 @@
-import os
 from PyQt5.QtWidgets import QApplication
 from gui_windows import PlayWindow, SelectionWindow
 
 
-
-
 if __name__ == '__main__':
-    app = QApplication([])
-    
-    select = SelectionWindow()
-    select.show()
-    
-    playwindow = PlayWindow()
+    import doctest
+    doctest.testmod()
 
-    select.click.connect(playwindow.load_grid)
-    select.click.connect(select.close)
-    
-    app.exec_()
+    APP = QApplication([])
+
+    SELECT = SelectionWindow()
+    SELECT.show()
+
+    PLAY = PlayWindow()
+
+    SELECT.click.connect(PLAY.load_grid)
+    SELECT.click.connect(SELECT.close)
+
+    APP.exec_()

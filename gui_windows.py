@@ -1,12 +1,19 @@
+"""
+Module with all windows of the gui
+"""
+
 import os
-from game import Game
-from PyQt5.QtCore import pyqtSignal, QObject, Qt
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QListWidget, QWidget, QPushButton, QGridLayout, QVBoxLayout, QMessageBox
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QWidget, QPushButton
+from PyQt5.QtWidgets import QVBoxLayout, QMessageBox
 from PyQt5.QtGui import QPixmap, QIcon, QFont
-from gui_components import Grid_GUI, Moves
+from gui_components import GridGUI, Moves
 
 
 class SelectionWindow(QWidget):
+    """
+    A very simple level selection windows
+    """
 
     click = pyqtSignal(str)
 
@@ -32,21 +39,22 @@ class SelectionWindow(QWidget):
 
         self.layout.addWidget(rules)
 
-
-
     def get_order(self):
+        """
+        To emit a signal with level name when one button is clicked
+        """
         sender = self.sender()
         self.click.emit(sender.text()+".txt")
 
 
 class PlayWindow(QWidget):
-
-    def __init__(self):
-        super().__init__()
+    """
+    The main window of the game
+    """
 
     def load_grid(self, level: str):
         self.moves = Moves()
-        self.grid_gui = Grid_GUI(level)
+        self.grid_gui = GridGUI(level)
 
         self.grid_gui.victory.connect(self.win_msg)
         self.grid_gui.lose.connect(self.lose_msg)
@@ -61,10 +69,18 @@ class PlayWindow(QWidget):
         self.show()
 
     def move_player(self, orders: str):
+        """
+        To move the player in the grid
+        Input :
+        -- orders: an order in ^v><1234
+        """
         self.grid_gui.move_player(orders)
         self.grid_gui.refresh()
 
     def win_msg(self):
+        """
+        A pop-up to indicate if its a win
+        """
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
 
@@ -72,8 +88,11 @@ class PlayWindow(QWidget):
         msg.setWindowTitle("victory !")
         msg.exec()
         self.close()
-    
+
     def lose_msg(self):
+        """
+        A pop-up to indicate if it's a lose
+        """
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
 
