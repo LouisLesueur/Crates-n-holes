@@ -4,13 +4,13 @@ A simple game in which you can push boxes into holes and you have to reach a doo
 
 ## Getting Started
 
-To start the game just run
+You'll need PyQt. To start the game just run
 
 ```
 python main.py
 ```
 
-To move a character press the correponding key (1,2,3 or 4) and then use ><^v and press the enter key (notice that you can enter a sequence). By default you'll move character 1.
+To move a character press the buttons on the left of the window, or use zqsd and e to change character.
 
 
 ## Testing a level
