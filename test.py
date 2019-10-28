@@ -6,7 +6,7 @@ import pytest
 from game import Game
 
 
-GAME = Game(True, False)
+GAME = Game("tests.txt")
 
 
 def test_moves():
@@ -49,7 +49,7 @@ def test_change_player():
     assert GAME.move_player(4, [0, 1]) == "not a current player !"
 
 
-GAME_CRATES = Game(True, False)
+GAME_CRATES = Game("tests.txt")
 
 
 def test_move_crate():
@@ -95,7 +95,7 @@ def test_suicide():
     assert GAME_CRATES.move_player(3, [0, -1]) == "Noooooooooooooooo...."
 
 
-GAME_TS = Game(True, False)
+GAME_TS = Game("tests.txt")
 
 
 def test_turnstiles():
