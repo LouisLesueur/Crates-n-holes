@@ -6,20 +6,17 @@ from grid import Grid
 from grid_element import Door, Wall
 from grid_element import Hole, Crate, Character, EmptySquare
 from grid_element import TurnstileArm, TurnstileBody
-from graphics import Graphics
-
 
 class Game():
     """A class to bind all game elements together"""
 
     current_player = 1
 
-    def __init__(self, testing=False, soluce_testing=False):
+    def __init__(self, level: str):
         """Initialize the grid
            Input: absolute path to the level
            Output: The grid"""
-        self.graphics = Graphics()
-        self.level_name = self.graphics.select(testing, soluce_testing)
+        self.level_name = level
         try:
             soluce_file = open("soluces/"+self.level_name+".soluce", 'r')
             self.soluce = soluce_file.readline().rstrip()
@@ -181,33 +178,18 @@ class Game():
             if self.grid.win == -1:
                 return False
 
-    def play(self):
-        """Function which displays and updates the grid"""
-        self.graphics.clear()
-        print(self.grid)
-        while self.grid.win == 0:
-            if self.message is not None:
-                print(self.message)
-            orders = input(
-                "Move with <>v^zqsd (player "+str(self.current_player)+"): ")
-            self.exec_order(orders)
-            self.graphics.clear()
-            print(self.grid)
-            if self.grid.win == 1:
-                print("You win !")
-            elif self.grid.win == -1:
-                print("You lose !")
+    def state(self):
+        return self.grid.win
 
-
-if __name__ == "__main__":
-
-    GAME = Game(False, True)
-
-    def check_soluce():
-        """ To check if a soluce works
-        >>> GAME.exec_order(GAME.soluce)
-        True
+    def __getitem__(self, key):
         """
-    print("Soluce tested: "+GAME.soluce)
-    import doctest
-    doctest.testmod()
+        To get the symbol of the grid_element at position [i][j]
+        """
+        i, j = key
+        return str(self.grid[i, j])
+
+    def get_dimensions(self):
+        """
+        To get the dimensions of the grid
+        """
+        return self.grid.get_dimensions()
