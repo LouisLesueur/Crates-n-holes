@@ -90,7 +90,6 @@ class PlayWindow(QWidget):
         """
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.resize(100, 300)
         msg.setText("You win !")
         msg.setWindowTitle("victory !")
         msg.exec()
