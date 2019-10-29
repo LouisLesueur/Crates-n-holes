@@ -13,16 +13,6 @@ python main.py
 To move a character press the buttons on the left of the window, or use zqsd and e to change character.
 
 
-## Testing a level
-
-To check if a level and its soluce are corrects, just run
-
-```
-python game.py
-```
-
-to enter in soluce test mode.
-
 ## Testing moves
 To test moves, run
 
@@ -32,7 +22,7 @@ pytest test.py
 
 ## Prerequisites
 
-All you need is python3, and pytest if you want to make tests
+All you need is python3, pyqt5 and pytest if you want to make tests
 
 ## Author
 
