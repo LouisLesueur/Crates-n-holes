@@ -1,3 +1,7 @@
+"""
+The main module of the module, to launch the game
+"""
+
 from PyQt5.QtWidgets import QApplication
 from gui_windows import PlayWindow, SelectionWindow
 

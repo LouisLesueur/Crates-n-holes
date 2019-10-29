@@ -4,7 +4,6 @@ Contains all the custom widgets for gui
 
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QGridLayout
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QMessageBox
 from PyQt5.QtGui import QPixmap, QIcon
 from game import Game
 

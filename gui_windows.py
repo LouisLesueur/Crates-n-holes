@@ -6,7 +6,7 @@ import os
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QWidget, QPushButton
 from PyQt5.QtWidgets import QVBoxLayout, QMessageBox
-from PyQt5.QtGui import QPixmap, QIcon, QFont
+from PyQt5.QtGui import QFont
 from gui_components import GridGUI, Moves
 
 
@@ -53,6 +53,9 @@ class PlayWindow(QWidget):
     """
 
     def load_grid(self, level: str):
+        """
+        To initialize the grid with a level path
+        """
         self.moves = Moves()
         self.grid_gui = GridGUI(level)
 
@@ -83,7 +86,7 @@ class PlayWindow(QWidget):
         """
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-
+        msg.resize(100, 300)
         msg.setText("You win !")
         msg.setWindowTitle("victory !")
         msg.exec()
