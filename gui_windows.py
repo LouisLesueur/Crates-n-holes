@@ -52,6 +52,10 @@ class PlayWindow(QWidget):
     The main window of the game
     """
 
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("TDLog project")
+
     def load_grid(self, level: str):
         """
         To initialize the grid with a level path

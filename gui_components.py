@@ -8,6 +8,18 @@ from PyQt5.QtGui import QPixmap, QIcon
 from game import Game
 
 
+class PlayButton(QPushButton):
+    def __init__(self, label): 
+        super().__init__()
+        self.setFixedHeight(60)
+        self.setFixedWidth(60)
+        self.setText(label)
+        self.setStyleSheet("""
+        QPushButton { height: 60; width: 60; qproperty-iconSize: 30px;}
+        QPushButton:pressed { background-color: red }
+        """)
+
+
 class Moves(QWidget):
     """
     Widget with moves and player selection buttons
@@ -18,17 +30,19 @@ class Moves(QWidget):
     def __init__(self):
 
         super().__init__()
+        self.setFixedHeight(190)
+        self.setFixedWidth(190)
         self.images = {'1': 'img/char1.png', '2': 'img/char2.png',
                        '3': 'img/char3.png', '4': 'img/char4.png'}
-
         layout = QGridLayout()
 
-        self.up_btn = QPushButton('^')
-        self.down_btn = QPushButton('v')
-        self.right_btn = QPushButton('>')
-        self.left_btn = QPushButton('<')
+        self.up_btn = PlayButton('^')
+        self.down_btn = PlayButton('v')
+        self.right_btn = PlayButton('>')
+        self.left_btn = PlayButton('<')
 
-        self.player_btn = QPushButton(QIcon(self.images[str(self.player)]), "")
+        self.player_btn = PlayButton("")
+        self.player_btn.setIcon(QIcon(self.images[str(self.player)]))
 
         self.up_btn.clicked.connect(self.get_order)
         self.down_btn.clicked.connect(self.get_order)
