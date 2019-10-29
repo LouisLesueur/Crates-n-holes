@@ -9,7 +9,10 @@ from game import Game
 
 
 class PlayButton(QPushButton):
-    def __init__(self, label): 
+    """
+    A custom and fancy button
+    """
+    def __init__(self, label):
         super().__init__()
         self.setFixedHeight(60)
         self.setFixedWidth(60)
