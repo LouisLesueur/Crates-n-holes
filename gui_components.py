@@ -19,7 +19,7 @@ class PlayButton(QPushButton):
         self.setText(label)
         self.setStyleSheet("""
         QPushButton { height: 60; width: 60; qproperty-iconSize: 30px;}
-        QPushButton:pressed { background-color: red }
+        QPushButton:hover {background-color: yellow}
         """)
 
 
