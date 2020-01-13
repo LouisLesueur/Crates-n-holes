@@ -1,10 +1,11 @@
-# TDLog - TP
+# Crates'n'holes
 
-A simple game in which you can push boxes into holes and you have to reach a door.
+A simple game in which you can push crates into holes and you have to reach a door.
+Made for the TDLog module of the ENPC.
 
 ## Getting Started
 
-You'll need PyQt. To start the game just run
+You'll need PyQt5. To start the game just run
 
 ```
 python main.py
